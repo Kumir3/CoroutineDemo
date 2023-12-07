@@ -1,7 +1,9 @@
 package com.hfad.coroutinedemo
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.SeekBar
 import com.hfad.coroutinedemo.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.seekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(
                 seek: SeekBar,
                 progress: Int, fromUser: Boolean
@@ -43,4 +46,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    fun launchCoroutines(view: View) {
+
+        (1..count).forEach {
+            binding.statusText.text = "Started Coroutine ${it}"
+            coroutineScope.launch(Dispatchers.Main) {
+                binding.statusText.text = performTask(it).await()
+            }
+        }
+    }
+
 }
